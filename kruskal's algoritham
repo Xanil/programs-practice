@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+class edges{
+    public:
+    int source;
+    int dest;
+    int weight;
+};
+
+bool compare(edges e1,edges e2){
+    return e1.weight<e2.weight;
+}
+
+
+
+int findparent(int v,int* parent){
+if(parent[v]==v){
+    return v;
+    }
+
+    return findparent(parent[v],parent);
+}
+
+
+
+
+void kruskal(edges*input,int n){
+
+edges* output=new edges[n-1];
+int* parent=new int[n];
+
+for(int i=0;i<n;i++){
+    parent[i]=i;
+}
+
+int i=0,counte=0;
+
+while(counte<n-1){
+    int sourceparent=findparent(input[i].source,parent);
+    int destparent=findparent(input[i].dest,parent);
+    if(sourceparent!=destparent){
+        output[counte]=input[i];
+        counte++;
+    }
+    i++;
+}
+
+for(int i=0;i<n-1;i++){
+    if(output[i].source<output[i].dest){
+        cout<<output[i].source<<" "<<output[i].dest<<" "<<output[i].weight<<endl;
+    }
+    else{
+        cout<<output[i].dest<<" "<<output[i].source<<" "<<output[i].weight<<endl;
+    }
+}
+
+
+}
+
+int main()
+{
+    int e,n;
+    cout<<"\n enter no of vertices and edges in a graph "<<endl;
+    cin>>n>>e;
+
+    edges* input=new edges[e];
+
+    for(int i=0;i<e;i++){
+            int s,d,w;
+        cout<<"\n enter the source,destination vertex and weight ";
+        cin>>s>>d>>w;
+    input[i].source=s;
+    input[i].dest=d;
+    input[i].weight=w;
+    }
+
+  sort(input,input+n,compare);
+  kruskal(input,n);
+    return 0;
+}
